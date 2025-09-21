@@ -8,18 +8,13 @@ Application::Application()
 	m_QuerySystem(std::make_shared<QuerySystem>())
 {
 	m_QuerySystem->LinkEventSystem(m_EventSystem);
-	m_ComplexNumberApp.InitializeSystems(m_EventSystem, m_QuerySystem);
+	m_ComplexNumberApp.LinkSystems(m_EventSystem, m_QuerySystem);
+	m_RationalNumberApp.LinkSystems(m_EventSystem, m_QuerySystem);
+	m_PolynomialApp.LinkSystems(m_EventSystem, m_QuerySystem);
 }
 
 void Application::Run()
 {
-
-	m_QuerySystem->QueryString("\n\tEnter a string: ", true);
-	printf("\n\t%s\n", m_EventSystem->GetInput<std::string>().c_str());
-
-	std::system("pause");
-
-
 	while (m_State != MainAppState::Exited)
 	{
 

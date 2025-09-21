@@ -18,7 +18,7 @@ public:
 	SubApp(AppID p_AppID);
 
 
-	void InitializeSystems(std::shared_ptr<EventSystem> p_EventSystem, std::shared_ptr<QuerySystem> p_QuerySystem);
+	void LinkSystems(std::shared_ptr<EventSystem> p_EventSystem, std::shared_ptr<QuerySystem> p_QuerySystem);
 
 	/*
 	* The Run() method is the main method that loops the SubApp over and over until the user exits the SubApp
