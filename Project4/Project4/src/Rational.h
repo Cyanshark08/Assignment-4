@@ -1,5 +1,6 @@
 #pragma once
 #include "ExceptionInterface.h"
+#include <iostream>
 #include <string>
 
 class Rational
@@ -35,6 +36,7 @@ public:
 	};
 
 	// overloaded operators
+	friend std::ostream &operator <<(std::ostream &out, const Rational &obj);
 	Rational &operator =(const Rational &right);
 	Rational operator +(const Rational &right) const;
 	Rational operator -(const Rational &right) const;

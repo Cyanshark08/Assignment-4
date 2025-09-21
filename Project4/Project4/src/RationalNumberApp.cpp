@@ -22,14 +22,14 @@ void RationalNumberApp::Run()
 			std::cout << "\n\tlife are rational.These include fractions, integers and numbers with finite decimal digits.";
 			std::cout << "\n\tIn general, a number that can be written as a fraction while it is in its own form is rational.";
 
-			std::cout << "\n\n\t2. Rational Numbers";
+			std::cout << "\n\n\t2. Rational Numbers Menu";
 			std::cout << "\n\t" << std::string(110, 205);
 			std::cout << "\n\t\tA. A Rational Number";
 			std::cout << "\n\t\tB. Multiple Rational Numbers";
 			std::cout << "\n\t" << std::string(110, 196);
 			std::cout << "\n\t\t0. Return";
 			std::cout << "\n\t" << std::string(110, 205);
-			m_QuerySystem->QueryChar("\n\tOption: ", "AB0");
+			m_QuerySystem->QueryChar("\n\t\tOption: ", "AB0");
 			break;
 
 		case SubMenuState::Single: // single rational number menu
@@ -46,6 +46,7 @@ void RationalNumberApp::Run()
 			std::cout << "\n\t\t9. Divide (/) the rational number with a constant";
 			std::cout << "\n\t" << std::string(110, 196);
 			std::cout << "\n\t\t0. Return";
+			std::cout << "\n\t" << std::string(110, 205);
 			m_QuerySystem->QueryChar("\n\t\tOption: ", "0123456789");
 			break;
 
@@ -70,11 +71,13 @@ void RationalNumberApp::Run()
 
 void RationalNumberApp::Restart()
 {
-	this->Clean();
 }
 
 void RationalNumberApp::Clean()
 {
+	m_Rational1 = Rational();
+	m_Rational2 = Rational();
+	m_MenuState = SubMenuState::Selection;
 }
 
 void RationalNumberApp::HandleInput(char p_Input)
@@ -99,9 +102,112 @@ void RationalNumberApp::HandleInput(char p_Input)
 
 	case SubMenuState::Single:
 	{
+		Rational R2;
+		switch (p_Input)
+		{
+
+		case '1': // set numerator
+			// get the integer to set as the numerator
+			m_QuerySystem->QueryInteger("\n\tEnter an integer for the numerator: ");
+			m_Rational1.setNumerator(m_EventSystem->GetInput<int>());
+			std::cout << "\n\tSuccessfully set the numerator";
+			break;
+
+		case '2': // set denominator
+			// get the integer to set ast the denominator
+			m_QuerySystem->QueryInteger("\n\tEnter an integer for the denominator: ");
+			m_Rational1.setDenominator(m_EventSystem->GetInput<int>());
+			std::cout << "\n\tSuccessfully set the denominator";
+			break;
+
+		case '3': // display the rational number
+			std::cout << "\n\tRational number R1 = " << m_Rational1;
+			break;
+
+		case '4': // normalize the rational number
+			R2 = m_Rational1.simplify();
+			std::cout << "\n\tNormalized rational number R2 (copy of R1): ";
+			std::cout << "\n\n\t" << R2;
+			break;
+
+		case '5': // negate the rational number
+			R2 = m_Rational1.negate();
+			std::cout << "\n\tNegated rational number R2 (copy of R1):";
+			std::cout << "\n\n\t-(" << m_Rational1 << ") = " << R2;
+			break;
+
+		case '6': // add with a constant
+		{
+			R2 = m_Rational1;
+			// get the integer to add
+			m_QuerySystem->QueryInteger("\n\tEnter an integer value: ");
+			int32_t value = m_EventSystem->GetInput<int>();
+			Rational temp(value, 1);
+
+			std::cout << "\n\n\tR2 + Value: ";
+			std::cout << "\n\t(" << R2 << ") + (" << value << ") = " << R2 + temp;
+
+			std::cout << "\n\n\tValue + R2: ";
+			std::cout << "\n\t(" << value << ") + (" << R2 << ") = " << temp + R2;
+			break;
+		}
+		case '7': // subtract with a constant
+		{
+			R2 = m_Rational1;
+			// get the integer to subtract
+			m_QuerySystem->QueryInteger("\n\tEnter an integer value: ");
+			int32_t value = m_EventSystem->GetInput<int>();
+			Rational temp(value, 1);
+
+			std::cout << "\n\n\tR2 - Value: ";
+			std::cout << "\n\t(" << R2 << ") - (" << value << ") = " << R2 - temp;
+
+			std::cout << "\n\n\tValue - R2: ";
+			std::cout << "\n\t(" << value << ") - (" << R2 << ") = " << temp - R2;
+			break;
+		}
+		case '8': // multiply with a constant
+		{
+			R2 = m_Rational1;
+			// get the integer to multiply
+			m_QuerySystem->QueryInteger("\n\tEnter an integer value: ");
+			int32_t value = m_EventSystem->GetInput<int>();
+			Rational temp(value, 1);
+
+			std::cout << "\n\n\tR2 * Value: ";
+			std::cout << "\n\t(" << R2 << ") * (" << value << ") = " << R2 * temp;
+
+			std::cout << "\n\n\tValue * R2: ";
+			std::cout << "\n\t(" << value << ") * (" << R2 << ") = " << temp * R2;
+			break;
+		}
+		case '9': // divide with a constant
+		{
+			R2 = m_Rational1;
+			// get the integer to divide
+			m_QuerySystem->QueryInteger("\n\tEnter an integer value: ");
+			int32_t value = m_EventSystem->GetInput<int>();
+			Rational temp(value, 1);
+
+			std::cout << "\n\n\tR2 / Value: ";
+			std::cout << "\n\t(" << R2 << ") / " << value << " = " << R2 / temp;
+
+			std::cout << "\n\n\tValue / R2: ";
+			std::cout << "\n\t" << value << " / (" << R2 << ") = " << temp / R2;
+			break;
+		}
+		case '0': // return
+			m_MenuState = SubMenuState::Selection;
+			break;
+		}
+
+		if (m_MenuState != SubMenuState::Selection)
+		{
+			std::cout << "\n\n";
+			std::system("pause");
+		}
 		break;
 	}
-
 	case SubMenuState::Multiple:
 	{
 		break;
