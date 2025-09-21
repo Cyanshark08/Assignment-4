@@ -129,6 +129,7 @@
     <ClCompile Include="src\Complex.cpp" />
     <ClCompile Include="src\ComplexNumberApp.cpp" />
     <ClCompile Include="src\PolynomialApp.cpp" />
+    <ClCompile Include="src\Rational.cpp" />
     <ClCompile Include="src\RationalNumberApp.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\ExceptionInterface.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="src\Complex.h" />
     <ClInclude Include="src\ComplexNumberApp.h" />
     <ClInclude Include="src\PolynomialApp.h" />
+    <ClInclude Include="src\Rational.h" />
     <ClInclude Include="src\RationalNumberApp.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\ExceptionInterface.h" />
