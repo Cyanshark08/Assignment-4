@@ -2,13 +2,11 @@
 #include <iostream>
 #include <string>
 
-void QuerySystem::InitializeEventSystem(std::shared_ptr<EventSystem> p_EventSystem)
+void QuerySystem::LinkEventSystem(std::shared_ptr<EventSystem> p_EventSystem)
 {
 	m_EventSystem = p_EventSystem;
 }
 
-//PreCondition: spaces (boolean true or false)
-//PostCondition: returns a std::string including space character(s) or without space character 
 void QuerySystem::QueryString(const std::string& prompt, bool spaces)
 {
 	std::string input = "";
@@ -22,11 +20,11 @@ void QuerySystem::QueryString(const std::string& prompt, bool spaces)
 		std::cin.clear();
 		std::cin.ignore(999, '\n');
 	}
-	m_EventSystem->PushEvent({ input.c_str(), EventType::InputEvent});
+
+	m_EventSystem->PushEvent( input, EventType::InputEvent );
+
 }
 
-//PreCondition: valid std::string of options
-//PostCondition: returns an uppercase  of the option (char)
 void QuerySystem::QueryChar(const std::string& prompt, const std::string& options)
 {
 	char input;
@@ -58,11 +56,9 @@ void QuerySystem::QueryChar(const std::string& prompt, const std::string& option
 				std::cout << "ERROR: Invalid input. Must be one of '" << options << "' character.\n";
 		}
 	} while (true);
-	m_EventSystem->PushEvent({ std::toupper(input), EventType::InputEvent });
+	m_EventSystem->PushEvent( std::toupper(input), EventType::InputEvent );
 }
 
-//PreCondition: valid yes (char) or no (char)
-//PostCondition: returns an uppercase  yes (char) or no (char) 
 void QuerySystem::QueryChar(const std::string& prompt, char yes, char no)
 {
 	char input;
@@ -84,11 +80,9 @@ void QuerySystem::QueryChar(const std::string& prompt, char yes, char no)
 			break;
 		}
 	} while (true);
-	m_EventSystem->PushEvent({ std::toupper(input), EventType::InputEvent });
+	m_EventSystem->PushEvent( std::toupper(input), EventType::InputEvent );
 }
 
-//PreCondition: NA
-//PostCondition: returns any character
 void QuerySystem::QueryChar(const std::string& prompt)
 {
 	char input;
@@ -106,11 +100,9 @@ void QuerySystem::QueryChar(const std::string& prompt)
 	} while (true);
 	std::cin.clear();
 	std::cin.ignore(999, '\n');
-	m_EventSystem->PushEvent({ std::toupper(input), EventType::InputEvent });
+	m_EventSystem->PushEvent( std::toupper(input), EventType::InputEvent );
 }
 
-//PreCondition: NA
-//PostCondition: returns any integer value
 void QuerySystem::QueryInteger(const std::string& prompt)
 {
 	int input;
@@ -128,11 +120,9 @@ void QuerySystem::QueryInteger(const std::string& prompt)
 	} while (true);
 	std::cin.clear();
 	std::cin.ignore(999, '\n');
-	m_EventSystem->PushEvent({ input, EventType::InputEvent });
+	m_EventSystem->PushEvent( input, EventType::InputEvent );
 }
 
-//PreCondition: posNeg (boolean true or false)
-//PostCondition: returns a positive integer value (posNeg = true) or a negative integer value (poseNeg = false)
 void QuerySystem::QueryInteger(const std::string& prompt, bool posNeg)
 {
 	int input;
@@ -154,11 +144,9 @@ void QuerySystem::QueryInteger(const std::string& prompt, bool posNeg)
 	} while (true);
 	std::cin.clear();
 	std::cin.ignore(999, '\n');
-	m_EventSystem->PushEvent({ input, EventType::InputEvent });
+	m_EventSystem->PushEvent( input, EventType::InputEvent );
 }
 
-//PreCondition: start (integer) and greater (boolean true or false)
-//PostCondition: returns an integer value greater than start or lesser than start
 void QuerySystem::QueryInteger(const std::string& prompt, int start, bool greater)
 {
 	int input;
@@ -180,11 +168,9 @@ void QuerySystem::QueryInteger(const std::string& prompt, int start, bool greate
 	} while (true);
 	std::cin.clear();
 	std::cin.ignore(999, '\n');
-	m_EventSystem->PushEvent({ input, EventType::InputEvent });
+	m_EventSystem->PushEvent( input, EventType::InputEvent );
 }
 
-//PreCondition: startRange (integer) and endRange (integer)
-//PostCondition: returns an integer value within range (startRannge and endRange)
 void QuerySystem::QueryInteger(const std::string& prompt, int startRange, int endRange)
 {
 	int input;
@@ -204,11 +190,9 @@ void QuerySystem::QueryInteger(const std::string& prompt, int startRange, int en
 	} while (true);
 	std::cin.clear();
 	std::cin.ignore(999, '\n');
-	m_EventSystem->PushEvent({ input, EventType::InputEvent });
+	m_EventSystem->PushEvent( input, EventType::InputEvent );
 }
 
-//PreCondition: NA
-//PostCondition: returns any double value
 void QuerySystem::QueryDouble(const std::string& prompt)
 {
 	double input;
@@ -226,11 +210,9 @@ void QuerySystem::QueryDouble(const std::string& prompt)
 	} while (true);
 	std::cin.clear();
 	std::cin.ignore(999, '\n');
-	m_EventSystem->PushEvent({ input, EventType::InputEvent });
+	m_EventSystem->PushEvent( input, EventType::InputEvent );
 }
 
-//PreCondition: posNeg (boolean true or false)
-//PostCondition: returns a positive double value (posNeg = true) or a negative double value (poseNeg = false)
 void QuerySystem::QueryDouble(const std::string& prompt, bool posNeg)
 {
 	double input;
@@ -252,11 +234,9 @@ void QuerySystem::QueryDouble(const std::string& prompt, bool posNeg)
 	} while (true);
 	std::cin.clear();
 	std::cin.ignore(999, '\n');
-	m_EventSystem->PushEvent({ input, EventType::InputEvent });
+	m_EventSystem->PushEvent( input, EventType::InputEvent );
 }
 
-//PreCondition: start(double) and greater(boolean true or false)
-//PostCondition: returns an double value greater than start or lesser than start
 void QuerySystem::QueryDouble(const std::string& prompt, double start, bool posNeg)
 {
 	double input;
@@ -278,11 +258,9 @@ void QuerySystem::QueryDouble(const std::string& prompt, double start, bool posN
 	} while (true);
 	std::cin.clear();
 	std::cin.ignore(999, '\n');
-	m_EventSystem->PushEvent({ input, EventType::InputEvent });
+	m_EventSystem->PushEvent( input, EventType::InputEvent );
 }
 
-//PreCondition: startRange (double) and endRange (double)
-//PostCondition: returns an double value within range (startRange and endRange)
 void QuerySystem::QueryDouble(const std::string& prompt, double startRange, double endRange)
 {
 	double input;
@@ -302,11 +280,9 @@ void QuerySystem::QueryDouble(const std::string& prompt, double startRange, doub
 	} while (true);
 	std::cin.clear();
 	std::cin.ignore(999, '\n');
-	m_EventSystem->PushEvent({ input, EventType::InputEvent });
+	m_EventSystem->PushEvent( input, EventType::InputEvent );
 }
 
-// PreCondition: NA
-//PostCondition: returns any float value
 void QuerySystem::QueryFloat(const std::string & prompt)
 {
 	float input;
@@ -324,11 +300,9 @@ void QuerySystem::QueryFloat(const std::string & prompt)
 	} while (true);
 	std::cin.clear();
 	std::cin.ignore(999, '\n');
-	m_EventSystem->PushEvent({ input, EventType::InputEvent });
+	m_EventSystem->PushEvent( input, EventType::InputEvent );
 }
 
-//PreCondition: posNeg (boolean true or false)
-//PostCondition: returns a positive float value (posNeg = true) or a negative float value (poseNeg = false)
 void QuerySystem::QueryFloat(const std::string& prompt, bool posNeg)
 {
 	float input;
@@ -350,11 +324,9 @@ void QuerySystem::QueryFloat(const std::string& prompt, bool posNeg)
 	} while (true);
 	std::cin.clear();
 	std::cin.ignore(999, '\n');
-	m_EventSystem->PushEvent({ input, EventType::InputEvent });
+	m_EventSystem->PushEvent( input, EventType::InputEvent );
 }
 
-//PreCondition: start(float) and greater(boolean true or false)
-//PostCondition: returns a float value greater than start or lesser than start
 void QuerySystem::QueryFloat(const std::string& prompt, float start, bool posNeg)
 {
 	float input;
@@ -376,11 +348,9 @@ void QuerySystem::QueryFloat(const std::string& prompt, float start, bool posNeg
 	} while (true);
 	std::cin.clear();
 	std::cin.ignore(999, '\n');
-	m_EventSystem->PushEvent({ input, EventType::InputEvent });
+	m_EventSystem->PushEvent( input, EventType::InputEvent );
 }
 
-//PreCondition: startRange (float) and endRange (float)
-//PostCondition: returns a float value within range (startRange and endRange)
 void QuerySystem::QueryFloat(const std::string& prompt, float startRange, float endRange)
 {
 	float input;
@@ -400,11 +370,9 @@ void QuerySystem::QueryFloat(const std::string& prompt, float startRange, float 
 	} while (true);
 	std::cin.clear();
 	std::cin.ignore(999, '\n');
-	m_EventSystem->PushEvent({ input, EventType::InputEvent });
+	m_EventSystem->PushEvent( input, EventType::InputEvent );
 }
 
-// PreCondition: prompt is passed as an argument
-// PostCondition: returns a c-std::string date in the proper format
 void QuerySystem::QueryDate(const std::string& prompt)
 {
 	std::string date;
@@ -497,5 +465,5 @@ void QuerySystem::QueryDate(const std::string& prompt)
 		break;
 	} while (true);
 
-	m_EventSystem->PushEvent({ date.c_str(), EventType::InputEvent});
+	m_EventSystem->PushEvent( date.c_str(), EventType::InputEvent);
 }

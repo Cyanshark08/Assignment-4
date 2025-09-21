@@ -1,79 +1,56 @@
 #pragma once
 #include <stdint.h>
 #include <string>
+#include <memory>
 
 enum class EventType
 {
 	InputEvent
 };
 
-union Value
-{
-public:
-	Value() = default;
-
-	Value(const char* p_Str);
-	Value(char p_Char);
-	Value(float p_Float);
-	Value(double p_Double);
-	Value(unsigned char p_UByte);
-	Value(unsigned short p_UShort);
-	Value(unsigned int p_UInt);
-	Value(unsigned long p_ULong);
-	Value(unsigned long long p_ULongLong);
-	Value(signed char p_Byte);
-	Value(short p_Short);
-	Value(int p_Int);
-	Value(long p_Long);
-	Value(long long p_LongLong);
-
-
-	char GetChar() const;
-	float GetFloat() const;
-	double GetDouble() const;
-	unsigned char GetUByte() const;
-	unsigned short GetUShort() const;
-	unsigned int GetUInt() const;
-	unsigned long GetULong() const;
-	unsigned long long GetULongLong() const;
-	signed char GetByte() const;
-	short GetShort() const;
-	int GetInt() const;
-	long GetLong() const;
-	long long GetLongLong() const;
-	std::string GetString() const;
-
-private:
-	char Character;
-	float Float;
-	double Double;
-	unsigned char UByte;
-	unsigned short UShort;
-	unsigned int UInt;
-	unsigned long ULong;
-	unsigned long long ULongLong;
-	signed char Byte;
-	short Short;
-	int Int;
-	long Long;
-	long long LongLong;
-	char* String;
-};
-
 class Event
 {
 public:
-	Event(Value p_InputData, EventType p_EventType);
+	class EventData
+	{
+	public:
+		EventData() = default;
+		EventData(void* p_Data);
 
-	Value GetInputData() const;
+		EventData(const EventData& p_Dap_EventDatata);
+		
+		template<typename T>
+		T GetData() const;
+
+		void SetData(void* p_Data);
+
+		~EventData();
+
+	private:
+		void* m_Data;
+	};
 
 public:
-	static Event CreateEvent(Value p_InputData, EventType p_EventType);
+	Event(void* p_EventData, EventType p_EventType);
+
+	Event(const Event& p_Event);
+
+	template<typename T>
+	T GetInputData() const;
 
 private:
-	Value m_InputData;
+	EventData m_EventData;
 	EventType m_EventType;
-
 };
 
+template<typename T>
+inline T Event::GetInputData() const
+{
+	return m_EventData.GetData<T>();
+}
 
+template<typename T>
+inline T Event::EventData::GetData() const
+{
+	return *(T*)(m_Data);
+}

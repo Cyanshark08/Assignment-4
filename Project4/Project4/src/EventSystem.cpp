@@ -5,13 +5,21 @@ EventSystem::EventSystem()
 	m_UnhandledEvent(false)
 {}
 
-void EventSystem::PushEvent(Event p_Event)
-{
-	m_EventQueue.push(p_Event);
-	m_UnhandledEvent = true;
-}
-
 void EventSystem::ReleaseFrontEvent()
 {
-	m_EventQueue.pop();
+	if(m_UnhandledEvent)
+	{
+		m_EventQueue.pop();
+		m_UnhandledEvent = !m_EventQueue.empty();
+	}
+}
+
+std::string EventSystem::E_EmptyEventQueue::GetExceptionName() const
+{
+	return "Empty Event Queue";
+}
+
+std::string EventSystem::E_EmptyEventQueue::GetExceptionMessage() const
+{
+	return "Event retrieval failed because Event Queue is Empty!";
 }

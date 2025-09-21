@@ -7,12 +7,19 @@ Application::Application()
 	m_EventSystem(std::make_shared<EventSystem>()),
 	m_QuerySystem(std::make_shared<QuerySystem>())
 {
-	m_QuerySystem->InitializeEventSystem(m_EventSystem);
+	m_QuerySystem->LinkEventSystem(m_EventSystem);
 	m_ComplexNumberApp.InitializeSystems(m_EventSystem, m_QuerySystem);
 }
 
 void Application::Run()
 {
+
+	m_QuerySystem->QueryString("\n\tEnter a string: ", true);
+	printf("\n\t%s\n", m_EventSystem->GetInput<std::string>().c_str());
+
+	std::system("pause");
+
+
 	while (m_State != MainAppState::Exited)
 	{
 
