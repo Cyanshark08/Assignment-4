@@ -35,6 +35,7 @@ public:
 	};
 
 	// overloaded operators
+	Rational &operator =(const Rational &right);
 	Rational operator +(const Rational &right) const;
 	Rational operator -(const Rational &right) const;
 	Rational operator *(const Rational &right) const;

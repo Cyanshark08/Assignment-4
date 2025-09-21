@@ -75,6 +75,17 @@ int32_t Rational::gcd(int32_t x, int32_t y) const
 		return gcd(y, x % y);
 }
 
+Rational &Rational::operator =(const Rational &right)
+{
+	if (this != &right)
+	{
+		numerator = right.numerator;
+		denominator = right.denominator;
+	}
+
+	return *this;
+}
+
 Rational Rational::operator +(const Rational &right) const
 {
 	Rational temp;
@@ -108,12 +119,12 @@ Rational Rational::operator /(const Rational &right) const
 {
 	Rational temp;
 
+	if (right.numerator == 0)
+		throw E_InvalidDenominator(this->numerator, right.numerator);
+
 	// multiply by the reciprocal
 	temp.numerator = this->numerator * right.denominator;
 	temp.denominator = this->denominator * right.numerator;
-
-	if (temp.denominator == 0)
-		throw E_InvalidDenominator(temp.numerator, temp.denominator);
 
 	return temp.simplify();
 }
@@ -147,7 +158,6 @@ bool Rational::operator <(const Rational &right) const
 {
 	return this->numerator * right.denominator < this->denominator * right.numerator;
 }
-
 
 
 // exceptions
