@@ -57,11 +57,11 @@ void RationalNumberApp::Run()
 			std::cout << "\n\t\t2. Enter rational number R2";
 			std::cout << "\n\t\t3. Verify condition operators (==, !=, >=, >, <= and <) of R1 and R2";
 			std::cout << "\n\t\t4. Evaluate arithmetic operators (+, - , * and /) of R1 and R2";
-			std::cout << "\n\t\t5. Evaluate (3 * (R1 + R2) / 7) / (R2 - R1 / 9) >= 621/889";
+			std::cout << "\n\t\t5. Evaluate (3 * (R1 + R2) / 7) / (R2 - R1 / 9) >= R3";
 			std::cout << "\n\t" << std::string(110, 196);
 			std::cout << "\n\t\t0. Return";
 			std::cout << "\n\t" << std::string(110, 205);
-			m_QuerySystem->QueryChar("\n\tOption: ", "123450");
+			m_QuerySystem->QueryChar("\n\t\tOption: ", "123450");
 			break;
 		}
 
@@ -100,7 +100,7 @@ void RationalNumberApp::HandleInput(char p_Input)
 		}
 		break;
 
-	case SubMenuState::Single:
+	case SubMenuState::Single: // single rational number
 	{
 		Rational R2;
 		switch (p_Input)
@@ -208,8 +208,95 @@ void RationalNumberApp::HandleInput(char p_Input)
 		}
 		break;
 	}
-	case SubMenuState::Multiple:
+	case SubMenuState::Multiple: // multiple rational numbers
 	{
+		Rational R3;
+		switch (p_Input)
+		{
+		case '1': // enter rational number 1
+			m_QuerySystem->QueryInteger("\n\tEnter the numerator for R1: ");
+			m_Rational1.setNumerator(m_EventSystem->GetInput<int>());
+			m_QuerySystem->QueryInteger("\tEnter the denominator for R1: ");
+			m_Rational1.setDenominator(m_EventSystem->GetInput<int>());
+			m_Rational1 = m_Rational1.simplify();
+
+			// display the rational number
+			std::cout << "\n\tR1 = " << m_Rational1;
+			break;
+
+		case '2': // enter rational number 2
+			m_QuerySystem->QueryInteger("\n\tEnter the numerator for R2: ");
+			m_Rational2.setNumerator(m_EventSystem->GetInput<int>());
+			m_QuerySystem->QueryInteger("\tEnter the denominator for R2: ");
+			m_Rational2.setDenominator(m_EventSystem->GetInput<int>());
+			m_Rational2 = m_Rational2.simplify();
+
+			// display the rational number
+			std::cout << "\n\tR2 = " << m_Rational2;
+			break;
+
+		case '3': // verify conditional operators
+			std::cout << "\n\tR1 == R2 -> (" << m_Rational1 << ") == (" << m_Rational2 << ") ? ";
+			m_Rational1 == m_Rational2 ? std::cout << "true" : std::cout << "false";
+
+			std::cout << "\n\tR1 != R2 -> (" << m_Rational1 << ") != (" << m_Rational2 << ") ? ";
+			m_Rational1 != m_Rational2 ? std::cout << "true" : std::cout << "false";
+
+			std::cout << "\n\tR1 >= R2 -> (" << m_Rational1 << ") >= (" << m_Rational2 << ") ? ";
+			m_Rational1 >= m_Rational2 ? std::cout << "true" : std::cout << "false";
+
+			std::cout << "\n\tR1  > R2 -> (" << m_Rational1 << ")  > (" << m_Rational2 << ") ? ";
+			m_Rational1 > m_Rational2 ? std::cout << "true" : std::cout << "false";
+
+			std::cout << "\n\tR1 <= R2 -> (" << m_Rational1 << ") <= (" << m_Rational2 << ") ? ";
+			m_Rational1 <= m_Rational2 ? std::cout << "true" : std::cout << "false";
+
+			std::cout << "\n\tR1  < R2 -> (" << m_Rational1 << ")  < (" << m_Rational2 << ") ? ";
+			m_Rational1 < m_Rational2 ? std::cout << "true" : std::cout << "false";
+			break;
+
+		case '4': // verify arithmetic operators
+			std::cout << "\n\tAddition       : R1 + R2 -> (" << m_Rational1 << ") + (" << m_Rational2 << ") = " << m_Rational1 + m_Rational2;
+			std::cout << "\n\tSubtraction    : R1 - R2 -> (" << m_Rational1 << ") - (" << m_Rational2 << ") = " << m_Rational1 - m_Rational2;
+			std::cout << "\n\tMultiplication : R1 * R2 -> (" << m_Rational1 << ") * (" << m_Rational2 << ") = " << m_Rational1 * m_Rational2;
+			std::cout << "\n\tDivision       : R1 / R2 -> (" << m_Rational1 << ") / (" << m_Rational2 << ") = " << m_Rational1 / m_Rational2;
+			break;
+
+		case '5': // evaluate expression
+			// get the number to evaluate with
+			m_QuerySystem->QueryInteger("\n\tEnter the numerator for R3: ");
+			R3.setNumerator(m_EventSystem->GetInput<int>());
+			m_QuerySystem->QueryInteger("\tEnter the denominator for R3: ");
+			R3.setDenominator(m_EventSystem->GetInput<int>());
+			R3 = R3.simplify();
+
+			// display R1, R2, and R3
+			std::cout << "\n\tR1 = " << m_Rational1;
+			std::cout << "\n\tR2 = " << m_Rational2;
+			std::cout << "\n\tR3 = " << R3;
+
+			// evaluate the expression
+			std::cout << "\n\n\tEvaluating the expression: ";
+			std::cout << "\n\t        (3 * (R1 + R2) / 7) / (R2 - R1 / 9) >= " << R3 << " ?";
+			std::cout << "\n\tStep 1: (3 * ((" << m_Rational1 << ") + (" << m_Rational2 << ")) / 7) / ((" << m_Rational2 << ") - ("
+				<< m_Rational1 << ") / 9) >= " << R3 << " ?";
+			std::cout << "\n\tStep 2: (3 * (" << m_Rational1 + m_Rational2 << ") / 7) / ((" << m_Rational2 << ") - (" << m_Rational1 / Rational(9, 1)
+				<< ")) >= " << R3 << " ?";
+			std::cout << "\n\tStep 3: (3 * (" << m_Rational1 + m_Rational2 << ") / 7) / (" << (m_Rational2 - (m_Rational1 / Rational(9, 1)))
+				<< ") >= " << R3 << " ?";
+			std::cout << "\n\tStep 4: (" << Rational(3, 1) * (m_Rational1 + m_Rational2) / Rational(7, 1) << ") / (" << (m_Rational2 - (m_Rational1 / Rational(9, 1)))
+				<< ") >= " << R3 << " ?";
+			Rational result = (Rational(3, 1) * (m_Rational1 + m_Rational2) / Rational(7, 1)) / ((m_Rational2 - (m_Rational1 / Rational(9, 1))));
+			std::cout << "\n\tStep 5: (" << result << ") >= " << R3 << " ?";
+			std::cout << "\n\tStep 6: "; result >= R3 ? std::cout << "true" : std::cout << "false";
+			break;
+		}
+
+		if (m_MenuState != SubMenuState::Selection)
+		{
+			std::cout << "\n\n";
+			std::system("pause");
+		}
 		break;
 	}
 	}
