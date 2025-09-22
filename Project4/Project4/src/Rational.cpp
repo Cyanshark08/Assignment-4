@@ -8,9 +8,6 @@ Rational::Rational()
 
 Rational::Rational(int32_t n, int32_t d)
 {
-	/*if (d == 0)
-		throw E_InvalidDenominator(n, d);*/
-
 	numerator = n;
 	denominator = d;
 }
@@ -20,7 +17,6 @@ Rational::Rational(const Rational &obj)
 	this->numerator = obj.numerator;
 	this->denominator = obj.denominator;
 }
-
 
 void Rational::setNumerator(int n)
 {
@@ -34,8 +30,6 @@ int32_t Rational::getNumerator() const
 
 void Rational::setDenominator(int d)
 {
-	/*if (d == 0)
-		throw E_InvalidDenominator(numerator, d);*/
 	denominator = d;
 }
 
@@ -171,28 +165,6 @@ std::ostream &operator <<(std::ostream &out, const Rational &obj)
 	else
 		out << obj.numerator << "/" << obj.denominator;
 	return out;
-}
-
-// exceptions
-Rational::E_InvalidDenominator::E_InvalidDenominator(int32_t n, int32_t d)
-{
-	numerator = n;
-	denominator = d;
-}
-
-std::string Rational::E_InvalidDenominator::getNumber() const
-{
-	return std::to_string(numerator) + "/" + std::to_string(denominator);
-}
-
-inline std::string Rational::E_InvalidDenominator::GetExceptionName() const
-{
-	return "Invalid denominator";
-}
-
-inline std::string Rational::E_InvalidDenominator::GetExceptionMessage() const
-{
-	return "(" + getNumber() + ") is invalid.";
 }
 
 

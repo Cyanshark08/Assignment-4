@@ -7,9 +7,10 @@
 * 
 * Date: 9/15/2025
 * 
-* Description: Chapter 3 Assignment (Containers)
-* In this project, we utilized containers to create
-* Various games—i.e., TicTacToe, Tower Of Hanoi, & N-Queens.
+* Description: Chapter 4 Assignment (Pointers and Dynamic Arrays)
+* In this project, we utilized pointers and dynamic arrays
+* to create three different projects (Complex numbers, 
+* Rational Numbers, and Polynomials).
 * 
 */
 

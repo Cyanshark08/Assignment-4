@@ -71,6 +71,7 @@ void RationalNumberApp::Run()
 
 void RationalNumberApp::Restart()
 {
+	this->Clean();
 }
 
 void RationalNumberApp::Clean()
