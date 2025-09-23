@@ -10,15 +10,22 @@ class EventSystem
 public:
 	EventSystem();
 
-	//Preconditon:
-	// - Template arg [InputType] should be the type of data to grab from the FRONT of the Event Queue
-	// - The Event Queue should NOT be empty
-	//Postcondition: returns the Input Event data as the template type [InputType] 
+	// Preconditon:
+	//  - Template arg [InputType] should be the type of data to grab from the FRONT of the Event Queue
+	//  - The Event Queue should NOT be empty
+	// 
+	// Postcondition: returns the Input Event data as the template type [InputType] 
 	template<typename InputType>
 	InputType GetInput();
 
-	//Preconditon: None
-	//Postcondition: Pushes an Event to the back of the Event Queue
+	// Preconditon: 
+	//  - Must provied correct data type with template arg
+	// 
+	// Postcondition: Pushes an Event to the back of the Event Queue
+	//
+	// NOTE: PushEvent allocates memory for the data
+	// but deallocation is handled by the EventData class
+	//
 	template<typename T>
 	void PushEvent(T p_EventData, EventType p_EventType);
 

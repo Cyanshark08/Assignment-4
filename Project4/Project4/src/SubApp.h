@@ -57,8 +57,8 @@ private:
 	* The Purpose of HandleInput() is to do varying things
 	* based on the input provided.
 	*
-	* This is typically used to implement a menu for each
-	* SubApp entity.
+	* This is typically used to implement a menu-submenu
+	* system for each SubApp entity.
 	*
 	* Precondition: Pass input (Must be a valid option)
 	*
