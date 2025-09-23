@@ -21,7 +21,7 @@ public:
 
 	/*
 	* Precondition: None
-	* 
+	*
 	* Postcondition: Initializes main application loop; handles each SubApp
 	*/
 	void Run();
@@ -42,10 +42,8 @@ private:
 	AppID m_CurrentSubApp;
 	ComplexNumberApp m_ComplexNumberApp;
 	RationalNumberApp m_RationalNumberApp;
-	PolynomialApp m_PolynomialApp;
+	PolynomialApp m_PolynomialApp;  // Changed from pointer to object
 
 	std::shared_ptr<QuerySystem> m_QuerySystem;
 	std::shared_ptr<EventSystem> m_EventSystem;
-
 };
-

@@ -123,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Polynomial.cpp" />
     <ClCompile Include="src\Event.cpp" />
     <ClCompile Include="src\EventSystem.cpp" />
     <ClCompile Include="src\QuerySystem.cpp" />
@@ -137,6 +138,7 @@
     <ClCompile Include="src\SubApp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Polynomial.h" />
     <ClInclude Include="src\Event.h" />
     <ClInclude Include="src\EventSystem.h" />
     <ClInclude Include="src\QuerySystem.h" />
