@@ -18,6 +18,9 @@ public:
 	template<typename InputType>
 	InputType GetInput();
 
+	template<typename InputType>
+	InputType GetInput(bool p_Flag);
+
 	// Preconditon: 
 	//  - Must provied correct data type with template arg
 	// 
@@ -56,6 +59,20 @@ private:
 template<typename InputType>
 inline InputType EventSystem::GetInput()
 {
+	if (m_EventQueue.empty())
+		throw E_EmptyEventQueue();
+
+	InputType temp = this->GetFrontData<InputType>();
+	this->ReleaseFrontEvent();
+	return temp;
+}
+
+template<typename InputType>
+inline InputType EventSystem::GetInput(bool p_Flag)
+{
+	if (!p_Flag)
+		return InputType();
+
 	if (m_EventQueue.empty())
 		throw E_EmptyEventQueue();
 

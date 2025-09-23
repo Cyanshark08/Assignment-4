@@ -16,6 +16,8 @@ void ComplexNumberApp::Run()
 		switch (m_MenuState)
 		{
 		case SubMenuState::Selection:
+			m_ComplexSingle = Complex();
+			m_ComplexPair = { Complex(), Complex() };
 			puts("\tA complex number is a number that can be expressed in the form a + b i, where a and b are real");
 			puts("\tnumbers, and i represents the \"imaginary unit\", satisfying the equation i ^ 2 = -1. Because no");
 			puts("\treal number satisfies this equation, i is called an imaginary number.For the complex number");

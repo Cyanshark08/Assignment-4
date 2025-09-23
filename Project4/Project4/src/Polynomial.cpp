@@ -25,9 +25,14 @@ void Polynomial::setCoefficients(const std::vector<double>& coefficients)
     removeLeadingZeros();
 }
 
-std::vector<double> Polynomial::getCoefficients() const
+const std::vector<double>& Polynomial::getCoefficients() const
 {
     return coefficients;
+}
+
+void Polynomial::setDegree(size_t p_Deg)
+{
+    coefficients.resize(p_Deg);
 }
 
 int Polynomial::getDegree() const
@@ -60,14 +65,9 @@ Polynomial Polynomial::negate() const
 
 double Polynomial::evaluate(double x) const
 {
-    double result = 0.0;
-    double power = 1.0;
-
-    for (double coeff : coefficients)
-    {
-        result += coeff * power;
-        power *= x;
-    }
+    double result = 0;
+    for (size_t i = 0; i < coefficients.size(); i++)
+        result += std::pow(coefficients[i], i);
 
     return result;
 }
@@ -221,4 +221,14 @@ std::ostream& operator<<(std::ostream& out, const Polynomial& obj)
 Polynomial operator*(double scalar, const Polynomial& poly)
 {
     return Polynomial({ poly.getCoefficients()[0] * scalar, poly.getCoefficients()[1] * scalar, poly.getCoefficients()[2] * scalar });
+}
+
+double& Polynomial::operator[](size_t p_Index)
+{
+    return coefficients[p_Index];
+}
+
+double Polynomial::operator()(double p_X)
+{
+    return evaluate(p_X);
 }

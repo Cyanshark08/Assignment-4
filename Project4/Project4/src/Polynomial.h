@@ -17,7 +17,8 @@ public:
 
     // accessors and mutators
     void setCoefficients(const std::vector<double>& coefficients);
-    std::vector<double> getCoefficients() const;
+    const std::vector<double>& getCoefficients() const;
+    void setDegree(size_t p_Deg);
     int getDegree() const;
 
     // operations
@@ -34,6 +35,10 @@ public:
     Polynomial operator*(double scalar) const;
     bool operator==(const Polynomial& right) const;
     bool operator!=(const Polynomial& right) const;
+
+    double& operator[](size_t p_Index);
+    double operator()(double p_X);
+
 
     std::string to_string() const;
 

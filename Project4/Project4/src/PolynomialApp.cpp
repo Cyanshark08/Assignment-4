@@ -7,13 +7,9 @@
 
 PolynomialApp::PolynomialApp()
     : m_MenuState(PolySubMenuState::Selection),
-    m_PolySingle(new Polynomial())
+    m_PolySingle(),
+    m_PolyPair(std::make_pair<Polynomial>(Polynomial(), Polynomial()))
 {
-}
-
-PolynomialApp::~PolynomialApp()
-{
-    delete m_PolySingle;
 }
 
 void PolynomialApp::Run()
@@ -34,7 +30,9 @@ void PolynomialApp::Run()
             break;
         case PolySubMenuState::Multiple:
             DisplayMultipleMenu();
-            m_QuerySystem->QueryChar("\n\tOption: ", "123450");
+            std::system("pause");
+            m_EventSystem->PushEvent<char>('\0', EventType::InputEvent);
+            m_MenuState = PolySubMenuState::Selection;
             break;
         }
 
@@ -49,10 +47,7 @@ void PolynomialApp::Restart()
 
 void PolynomialApp::Clean()
 {
-    if (m_PolySingle)
-    {
-        *m_PolySingle = Polynomial(); // Reset to default polynomial
-    }
+    m_PolySingle = Polynomial();
     m_PolyPair = std::make_pair(Polynomial(), Polynomial());
     m_MenuState = PolySubMenuState::Selection;
 }
@@ -68,7 +63,6 @@ void PolynomialApp::HandleInput(char p_Input)
         HandleSingleInput(p_Input);
         break;
     case PolySubMenuState::Multiple:
-        HandleMultipleInput(p_Input);
         break;
     }
 }
@@ -105,16 +99,23 @@ void PolynomialApp::DisplaySingleMenu()
 
 void PolynomialApp::DisplayMultipleMenu()
 {
-    puts("\tB > Multiple Polynomials");
-    printf("\t%s\n", std::string(110, 205).c_str());
-    puts("\t1. Enter the first polynomial (P1)");
-    puts("\t2. Enter the second polynomial (P2)");
-    puts("\t3. Display all operations (P1 + P2, P1 - P2, P1 * P2)");
-    puts("\t4. Multiply polynomials by constant");
-    puts("\t5. Evaluate complex expression");
-    printf("\t%s\n", std::string(110, 196).c_str());
-    puts("\t0. Return");
-    printf("\t%s\n", std::string(110, 205).c_str());
+
+    std::cout << "\n\n\tPolynomial 1:\n\t";
+    EnterPolynomialCoefficients(m_PolyPair.first);
+
+    std::cout << "\n\n\tPolynomial 2:\n\t";
+    EnterPolynomialCoefficients(m_PolyPair.second);
+
+    std::cout << "\n\t\tAddition of polynomials -> P1 + P2 = " << (m_PolyPair.first + m_PolyPair.second);
+    std::cout << "\n\t\tSubtration of polynomials -> P1 - P2 = " << (m_PolyPair.first - m_PolyPair.second);
+    std::cout << "\n\t\tMultiplication of polynomials -> P1 * P2 = " << (m_PolyPair.first * m_PolyPair.second);
+
+    m_QuerySystem->QueryDouble("\n\n\tInput a constant value: ");
+    float value = m_EventSystem->GetInput<double>();
+
+    std::cout << "\n\tP1 * " << value << " = " << m_PolyPair.first * value;
+    std::cout << "\n\tP2 * " << value << " = " << m_PolyPair.second * value << std::endl;
+
 }
 
 void PolynomialApp::HandleSelectionInput(char p_Input)
@@ -164,45 +165,13 @@ void PolynomialApp::HandleSingleInput(char p_Input)
     }
 }
 
-void PolynomialApp::HandleMultipleInput(char p_Input)
-{
-    switch (p_Input)
-    {
-    case '1':
-        EnterPolynomialCoefficients(m_PolyPair.first);
-        break;
-    case '2':
-        EnterPolynomialCoefficients(m_PolyPair.second);
-        break;
-    case '3':
-        VerifyConditionalOperators();
-        break;
-    case '4':
-        EvaluateArithmeticOperators();
-        break;
-    case '5':
-        EvaluateComplexExpression();
-        break;
-    case '0':
-        m_MenuState = PolySubMenuState::Selection;
-        break;
-    }
-
-    if (m_MenuState != PolySubMenuState::Selection)
-    {
-        std::cout << "\n\n";
-        std::system("pause");
-    }
-}
-
 // Option 1: Enter number of terms (1-100)
 void PolynomialApp::EnterNumberOfTerms()
 {
     m_QuerySystem->QueryInteger("\n\tEnter the number of terms(1..100) for the polynomial: ", 1, 100);
     int numTerms = m_EventSystem->GetInput<int>();
 
-    std::vector<double> coefficients(numTerms, 0.0);
-    m_PolySingle->setCoefficients(coefficients);
+    m_PolySingle.setDegree(numTerms);
 
     std::cout << "\n\tPolynomial has been set with " << numTerms << " terms.";
     std::cout << "\n\tUse option 2 to specify the coefficients for each term.";
@@ -211,10 +180,7 @@ void PolynomialApp::EnterNumberOfTerms()
 // Option 2: Specify coefficients
 void PolynomialApp::SpecifyCoefficients()
 {
-    std::vector<double> coefficients = m_PolySingle->getCoefficients();
-    int numTerms = coefficients.size();
-
-    if (numTerms == 0)
+    if (m_PolySingle.getCoefficients().size() == 0)
     {
         std::cout << "\n\tERROR: Please use option 1 to set the number of terms first.";
         return;
@@ -222,90 +188,73 @@ void PolynomialApp::SpecifyCoefficients()
 
     std::cout << "\n\tEnter the coefficients for each term:";
 
-    for (int termNumber = 1; termNumber <= numTerms; termNumber++)
+    for (int i = 0; i < m_PolySingle.getCoefficients().size(); i++)
     {
-        int exponent = numTerms - termNumber;
-        std::string prompt = "\n\tEnter the coefficient for term #" + std::to_string(termNumber) + ": ";
+        std::string prompt = "\n\tEnter the coefficient for term #" + std::to_string(i + 1) + ": ";
         m_QuerySystem->QueryDouble(prompt);
-        coefficients[exponent] = m_EventSystem->GetInput<double>();
+        m_PolySingle[i] = m_EventSystem->GetInput<double>();
     }
-
-    m_PolySingle->setCoefficients(coefficients);
-    std::cout << "\n\tThe P(x) is entered: " << *m_PolySingle;
+    std::cout << "\n\tThe P(x) is entered: " << m_PolySingle;
 }
 
 // Option 3: Evaluate expression
 void PolynomialApp::EvaluateExpression()
 {
-    if (m_PolySingle->getDegree() < 0 || m_PolySingle->getCoefficients().empty())
+    if (m_PolySingle.getDegree() < 0 || m_PolySingle.getCoefficients().empty())
     {
         std::cout << "\n\tERROR: Please define a polynomial first using options 1 and 2.";
         return;
     }
 
-    std::cout << "\n\tP1(x) = " << *m_PolySingle;
+    std::cout << "\n\tP1(x) = " << m_PolySingle;
     m_QuerySystem->QueryDouble("\n\n\tEnter the value of x to evaluate the polynomial: ");
     double x = m_EventSystem->GetInput<double>();
-
-    std::vector<double> coefficients = m_PolySingle->getCoefficients();
     double totalResult = 0.0;
 
-    std::cout << "\n\n\t";
-    std::cout << std::string(50, '-') << "\n";
-    std::cout << "\t|    |    |\n";
+    puts("");
 
-    for (int i = coefficients.size() - 1; i >= 0; i--)
+    for (int i = m_PolySingle.getCoefficients().size() - 1; i >= 0; i--)
     {
-        double coeff = coefficients[i];
-        if (std::abs(coeff) < 1e-10) continue;
+        if(i == 0)
+        {
+            std::cout << "\n\t+" << std::fixed << std::setprecision(2) << std::right << std::setw(9) << m_PolySingle[i] * std::pow(x, i) << " <- " << std::fixed << std::setprecision(2) << m_PolySingle[i] << "x^" << i;
+            totalResult += m_PolySingle[i] * std::pow(x, i);
+            break;
+        }
 
-        double termValue = coeff * std::pow(x, i);
-        totalResult += termValue;
-
-        std::cout << "\t| ";
-        std::cout << std::scientific << std::setprecision(6) << termValue;
-        std::cout << " <-    | ";
-        std::cout << std::fixed << std::setprecision(2) << coeff;
-
-        if (i == 1) std::cout << "x";
-        else if (i > 1) std::cout << "x^" << i;
-        else std::cout << "";
-
-        std::cout << "    |\n";
+        std::cout  << "\n\t" << std::fixed << std::setprecision(2) << std::right << std::setw(10) << m_PolySingle[i] * std::pow(x, i) << " <- " << std::fixed << std::setprecision(2) << m_PolySingle[i] << "x^" << i;
+        totalResult += m_PolySingle[i] * std::pow(x, i);
     }
 
-    std::cout << "\t|    |    |\n";
-    std::cout << "\t" << std::string(50, '-') << "\n";
-    std::cout << "\t" << std::string(20, ' ') << "+\n";
-    std::cout << "\t" << std::string(50, '-') << "\n";
-    std::cout << "\t** " << std::scientific << std::setprecision(6) << totalResult << " **\n";
+    std::cout << "\n\t----------------------------------\n\t";
+    std::cout << std::setprecision(2) << std::fixed << totalResult;
 }
 
 // Option 4: Solve for the derivative
 void PolynomialApp::SolveDerivative()
 {
-    if (m_PolySingle->getDegree() < 0 || m_PolySingle->getCoefficients().empty())
+    if (m_PolySingle.getDegree() < 0 || m_PolySingle.getCoefficients().empty())
     {
         std::cout << "\n\tERROR: Please define a polynomial first using options 1 and 2.";
         return;
     }
 
-    Polynomial derivative = CalculateDerivative(*m_PolySingle);
-    std::cout << "\n\tPolynomial P(x) = " << *m_PolySingle;
+    Polynomial derivative = CalculateDerivative(m_PolySingle);
+    std::cout << "\n\tPolynomial P(x) = " << m_PolySingle;
     std::cout << "\n\n\tDerivative    = " << derivative;
 }
 
 // Option 5: Solve for the integral
 void PolynomialApp::SolveIntegral()
 {
-    if (m_PolySingle->getDegree() < 0 || m_PolySingle->getCoefficients().empty())
+    if (m_PolySingle.getDegree() < 0 || m_PolySingle.getCoefficients().empty())
     {
         std::cout << "\n\tERROR: Please define a polynomial first using options 1 and 2.";
         return;
     }
 
-    Polynomial integral = CalculateIntegral(*m_PolySingle);
-    std::cout << "\n\tPolynomial P(x) = " << *m_PolySingle;
+    Polynomial integral = CalculateIntegral(m_PolySingle);
+    std::cout << "\n\tPolynomial P(x) = " << m_PolySingle;
     std::cout << "\n\n\tIntegral     = " << integral << " + C";
 }
 
@@ -340,7 +289,7 @@ void PolynomialApp::EnterPolynomialCoefficients(Polynomial& poly)
     m_QuerySystem->QueryInteger("\n\tEnter the number of terms: ", 1, true);
     int numTerms = m_EventSystem->GetInput<int>();
 
-    std::vector<double> coefficients(numTerms, 0.0);
+    poly.setDegree(numTerms);
 
     std::cout << "\n\tEnter coefficients for each term (from highest degree to constant term):";
 
@@ -352,19 +301,17 @@ void PolynomialApp::EnterPolynomialCoefficients(Polynomial& poly)
         else prompt += "x^" + std::to_string(i) + ": ";
 
         m_QuerySystem->QueryDouble(prompt);
-        coefficients[i] = m_EventSystem->GetInput<double>();
+        poly[i] = m_EventSystem->GetInput<double>();
     }
-
-    poly.setCoefficients(coefficients);
     std::cout << "\n\tPolynomial set to: " << poly;
 }
 
 void PolynomialApp::VerifyConditionalOperators()
 {
-    std::cout << "\n\tP1 == P2 -> (" << m_PolyPair.first << ") == (" << m_PolyPair.second << ") ? ";
+    std::cout << "\n\tP1 == P2 . (" << m_PolyPair.first << ") == (" << m_PolyPair.second << ") ? ";
     std::cout << (m_PolyPair.first == m_PolyPair.second ? "true" : "false");
 
-    std::cout << "\n\tP1 != P2 -> (" << m_PolyPair.first << ") != (" << m_PolyPair.second << ") ? ";
+    std::cout << "\n\tP1 != P2 . (" << m_PolyPair.first << ") != (" << m_PolyPair.second << ") ? ";
     std::cout << (m_PolyPair.first != m_PolyPair.second ? "true" : "false");
 }
 

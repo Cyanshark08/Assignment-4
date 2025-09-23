@@ -8,7 +8,7 @@ class PolynomialApp :
 {
 public:
     PolynomialApp();
-    ~PolynomialApp();
+    ~PolynomialApp() = default;
 
     void Run() override;
     void Restart() override;
@@ -27,7 +27,7 @@ private:
     };
 
     PolySubMenuState m_MenuState;
-    Polynomial* m_PolySingle;
+    Polynomial m_PolySingle;
     std::pair<Polynomial, Polynomial> m_PolyPair;
 
     void DisplaySelectionMenu();
@@ -35,7 +35,6 @@ private:
     void DisplayMultipleMenu();
     void HandleSelectionInput(char p_Input);
     void HandleSingleInput(char p_Input);
-    void HandleMultipleInput(char p_Input);
 
     // Single polynomial operations
     void EnterNumberOfTerms();
