@@ -52,6 +52,16 @@ Complex Complex::operator-(const Complex& p_Other) const
     return Complex(m_Real - p_Other.m_Real, m_Imaginary - p_Other.m_Imaginary);
 }
 
+Complex Complex::operator+(float p_Other) const
+{
+    return Complex(this->m_Real + p_Other, this->m_Imaginary);
+}
+
+Complex Complex::operator-(float p_Other) const
+{
+    return Complex(this->m_Real - p_Other, this->m_Imaginary);
+}
+
 Complex& Complex::operator+=(const Complex& p_Other)
 {
     this->m_Real += p_Other.m_Real;
@@ -111,6 +121,16 @@ Complex& Complex::operator/=(float p_Other)
     this->m_Real /= p_Other;
     this->m_Imaginary /= p_Other;
     return *this;
+}
+
+bool Complex::operator==(const Complex& p_Other) const
+{
+    return (this->m_Real == p_Other.m_Real && this->m_Imaginary == p_Other.m_Imaginary);
+}
+
+bool Complex::operator!=(const Complex& p_Other) const
+{
+    return (this->m_Real != p_Other.m_Real || this->m_Imaginary != p_Other.m_Imaginary);
 }
 
 std::string Complex::to_string() const

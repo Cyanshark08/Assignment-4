@@ -52,7 +52,7 @@ void ComplexNumberApp::Run()
 			puts("\t1. Enter complex number C1");
 			puts("\t2. Enter complex number C2");
 			puts("\t3. Verify condition operators (== and != ) of C1 and C2");
-			puts("\t4. Evaluate arithmatic operators (+, -, * and / ) of C1 and C2");
+			puts("\t4. Evaluate arithmetic operators (+, -, * and / ) of C1 and C2");
 			puts("\t5. Evaluate steps in (3 * (C1 + C2) / 7) / (C2 - C1 / 9) != (1.07109 + 0.120832i) ?");
 			printf("\t%s\n", std::string(110, 196).c_str());
 			puts("\t0. Return");
@@ -98,7 +98,7 @@ void ComplexNumberApp::HandleInput(char p_Input)
 		break;
 	case SubMenuState::Single:
 	{
-		Complex C2;
+		float value;
 		switch (p_Input)
 		{
 
@@ -114,28 +114,39 @@ void ComplexNumberApp::HandleInput(char p_Input)
 			printf("\n\t%s\n\t", m_ComplexSingle.to_string().c_str());
 			break;
 		case '4':
-			C2 = -m_ComplexSingle;
-			printf("\n\t%s\n\t", C2.to_string().c_str());
+			printf("\n\t-(%s) = (%s)\n\t",m_ComplexSingle.to_string().c_str(), (-m_ComplexSingle).to_string().c_str());
 			break;
 		case '5':
 			m_QuerySystem->QueryFloat("\n\tEnter a value: ");
-			C2 = m_ComplexSingle + Complex(m_EventSystem->GetInput<float>());
-			printf("\n\t%s\n\t", C2.to_string().c_str());
+			value = m_EventSystem->GetInput<float>();
+			printf("\n\tC2 * value");
+			printf("\n\t(%s) * %.2f = %s", m_ComplexSingle.to_string().c_str(), value, (m_ComplexSingle + value).to_string().c_str());
+			printf("\n\n\tvalue * C2");
+			printf("\n\t%.2f * (%s) = %s\n\t", value, m_ComplexSingle.to_string().c_str(), (Complex(value) + m_ComplexSingle).to_string().c_str());
 			break;
 		case '6':
 			m_QuerySystem->QueryFloat("\n\tEnter a value: ");
-			C2 = m_ComplexSingle - Complex(m_EventSystem->GetInput<float>());
-			printf("\n\t%s\n\t", C2.to_string().c_str());
+			value = m_EventSystem->GetInput<float>();
+			printf("\n\tC2 - value");
+			printf("\n\t(%s) - %.2f = %s", m_ComplexSingle.to_string().c_str(), value, (m_ComplexSingle - value).to_string().c_str());
+			printf("\n\n\tvalue - C2");
+			printf("\n\t%.2f - (%s) = %s\n\t", value, m_ComplexSingle.to_string().c_str(), (Complex(value) - m_ComplexSingle).to_string().c_str());
 			break;
 		case '7':
 			m_QuerySystem->QueryFloat("\n\tEnter a value: ");
-			C2 = m_ComplexSingle * m_EventSystem->GetInput<float>();
-			printf("\n\t%s\n\t", C2.to_string().c_str());
+			value = m_EventSystem->GetInput<float>();
+			printf("\n\tC2 * value");
+			printf("\n\t(%s) * %.2f = %s", m_ComplexSingle.to_string().c_str(), value, (m_ComplexSingle * value).to_string().c_str());
+			printf("\n\n\tvalue * C2");
+			printf("\n\t%.2f * (%s) = %s\n\t", value, m_ComplexSingle.to_string().c_str(), (Complex(value) * m_ComplexSingle).to_string().c_str());
 			break;
 		case '8':
 			m_QuerySystem->QueryFloat("\n\tEnter a value: ");
-			C2 = m_ComplexSingle / m_EventSystem->GetInput<float>();
-			printf("\n\t%s\n\t", C2.to_string().c_str());
+			value = m_EventSystem->GetInput<float>();
+			printf("\n\tC2 / value");
+			printf("\n\t(%s) / %.2f = %s", m_ComplexSingle.to_string().c_str(), value, (m_ComplexSingle / value).to_string().c_str());
+			printf("\n\n\tvalue / C2");
+			printf("\n\t%.2f / (%s) = %s\n\t", value, m_ComplexSingle.to_string().c_str(), (Complex(value) / m_ComplexSingle).to_string().c_str());
 			break;
 		case '0':
 			m_MenuState = SubMenuState::Selection;
@@ -149,22 +160,52 @@ void ComplexNumberApp::HandleInput(char p_Input)
 		break;
 	case SubMenuState::Multiple:
 
+	{
+		Complex C3;
 		switch (p_Input)
 		{
 		case '1':
+			m_QuerySystem->QueryFloat("\n\n\tEnter a Number (float value) for the Real Part: ");
+			m_ComplexPair.first.SetReal(m_EventSystem->GetInput<float>());
+			m_QuerySystem->QueryFloat("\n\n\tEnter a Number (float value) for the Imaginary Part: ");
+			m_ComplexPair.first.SetImaginary(m_EventSystem->GetInput<float>());
 			break;
 		case '2':
+			m_QuerySystem->QueryFloat("\n\n\tEnter a Number (float value) for the Real Part: ");
+			m_ComplexPair.second.SetReal(m_EventSystem->GetInput<float>());
+			m_QuerySystem->QueryFloat("\n\n\tEnter a Number (float value) for the Imaginary Part: ");
+			m_ComplexPair.second.SetImaginary(m_EventSystem->GetInput<float>());
 			break;
 		case '3':
+			printf("\n\tC1 == C2 -> (%s) == (%s) ? %s", m_ComplexPair.first.to_string().c_str(), m_ComplexPair.second.to_string().c_str(), m_ComplexPair.first == m_ComplexPair.second ? "true" : "false");
+			printf("\n\tC1 != C2 -> (%s) != (%s) ? %s\n\t", m_ComplexPair.first.to_string().c_str(), m_ComplexPair.second.to_string().c_str(), m_ComplexPair.first != m_ComplexPair.second ? "true" : "false");
 			break;
 		case '4':
+			printf("\n\tAddition: C1 + C2 -> (%s) + (%s) = %s", m_ComplexPair.first.to_string().c_str(), m_ComplexPair.second.to_string().c_str(), (m_ComplexPair.first + m_ComplexPair.second).to_string().c_str());
+			printf("\n\tSubtraction : C2 - C1 -> (%s) - (%s) = %s", m_ComplexPair.first.to_string().c_str(), m_ComplexPair.second.to_string().c_str(), (m_ComplexPair.first - m_ComplexPair.second).to_string().c_str());
+			printf("\n\tMultiplication : C1 * C2 -> (%s) * (%s) = %s", m_ComplexPair.first.to_string().c_str(), m_ComplexPair.second.to_string().c_str(), (m_ComplexPair.first * m_ComplexPair.second).to_string().c_str());
+			printf("\n\tDivision : C2 / C1 -> (%s) / (%s) = %s\n\t", m_ComplexPair.first.to_string().c_str(), m_ComplexPair.second.to_string().c_str(), (m_ComplexPair.first / m_ComplexPair.second).to_string().c_str());
 			break;
 		case '5':
+			printf("\n\tC1 = %s", m_ComplexPair.first.to_string().c_str());
+			printf("\n\tC2 = %s", m_ComplexPair.second.to_string().c_str());
+			printf("\n\tC3 = 1.07109 + 0.120832i");
+			printf("\n\tEvaluating expression...");
+			printf("\n\t(3 * (C1 + C2) / 7) / (C2 - C1 / 9) != (1.07109 + 0.120832i) ?");
+			printf("\n\tstep #1: (3 * (%s) / 7) / (C2 - (%s)) != (1.07109 + 0.120832i)", (m_ComplexPair.first + m_ComplexPair.second).to_string().c_str(), (m_ComplexPair.first / 9.f).to_string().c_str());
+			printf("\n\tstep #2: ((%s) / 7) / (%s) != (1.07109 + 0.120832i)", ((m_ComplexPair.first + m_ComplexPair.second) * 3.f).to_string().c_str(), (m_ComplexPair.second - m_ComplexPair.first / 9.f).to_string().c_str());
+			printf("\n\tstep #3: (%s) / (%s) != (1.07109 + 0.120832i)", ((m_ComplexPair.first + m_ComplexPair.second) * 3.f / 7.f).to_string().c_str(), (m_ComplexPair.second - m_ComplexPair.first / 9.f).to_string().c_str());
+			printf("\n\tstep #4: (%s) != (1.07109 + 0.120832i) ?", (((m_ComplexPair.first + m_ComplexPair.second) * 3.f / 7.f) / (m_ComplexPair.second - m_ComplexPair.first / 9.f)).to_string().c_str());
+			printf("\n\tstep #5: %s\n\t", (((m_ComplexPair.first + m_ComplexPair.second) * 3.f / 7.f) / (m_ComplexPair.second - m_ComplexPair.first / 9.f)) != Complex(1.07109f, 0.120832f) ? "true" : "false");
 			break;
 		case '0':
 			m_MenuState = SubMenuState::Selection;
 			break;
 		}
+
+		if (m_MenuState != SubMenuState::Selection)
+			std::system("pause");
+	}
 
 		break;
 	}

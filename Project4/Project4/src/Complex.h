@@ -20,6 +20,9 @@ public:
 	Complex operator+(const Complex& p_Other) const;
 	Complex operator-(const Complex& p_Other) const;
 
+	Complex operator+(float p_Other) const;
+	Complex operator-(float p_Other) const;
+
 	Complex& operator+=(const Complex& p_Other);
 	Complex& operator-=(const Complex& p_Other);
 
@@ -34,6 +37,10 @@ public:
 
 	Complex& operator*=(float p_Other);
 	Complex& operator/=(float p_Other);
+
+
+	bool operator==(const Complex& p_Other) const;
+	bool operator!=(const Complex& p_Other) const;
 
 	std::string to_string() const;
 
