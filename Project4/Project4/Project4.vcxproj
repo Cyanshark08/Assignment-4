@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClCompile Include="src\Event.cpp" />
     <ClCompile Include="src\EventSystem.cpp" />
+    <ClCompile Include="src\Polynomial.cpp" />
     <ClCompile Include="src\QuerySystem.cpp" />
     <ClCompile Include="src\Complex.cpp" />
     <ClCompile Include="src\ComplexNumberApp.cpp" />
@@ -139,6 +140,7 @@
   <ItemGroup>
     <ClInclude Include="src\Event.h" />
     <ClInclude Include="src\EventSystem.h" />
+    <ClInclude Include="src\Polynomial.h" />
     <ClInclude Include="src\QuerySystem.h" />
     <ClInclude Include="src\Complex.h" />
     <ClInclude Include="src\ComplexNumberApp.h" />
