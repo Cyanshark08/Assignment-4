@@ -99,16 +99,19 @@ void PolynomialApp::DisplaySingleMenu()
 
 void PolynomialApp::DisplayMultipleMenu()
 {
+    std::cout << "\n\tB. Two Polynomials";
+    std::cout << "\n\t" << std::string(110, 205);
 
-    std::cout << "\n\n\tPolynomial 1:\n\t";
+    std::cout << "\n\tPolynomial 1:\n\t";
     EnterPolynomialCoefficients(m_PolyPair.first);
 
     std::cout << "\n\n\tPolynomial 2:\n\t";
     EnterPolynomialCoefficients(m_PolyPair.second);
 
-    std::cout << "\n\t\tAddition of polynomials -> P1 + P2 = " << (m_PolyPair.first + m_PolyPair.second);
-    std::cout << "\n\t\tSubtration of polynomials -> P1 - P2 = " << (m_PolyPair.first - m_PolyPair.second);
-    std::cout << "\n\t\tMultiplication of polynomials -> P1 * P2 = " << (m_PolyPair.first * m_PolyPair.second);
+    std::cout << "\n";
+    std::cout << "\n\t\tAddition of polynomials        -> P1 + P2 = " << (m_PolyPair.first + m_PolyPair.second);
+    std::cout << "\n\t\tSubtration of polynomials      -> P1 - P2 = " << (m_PolyPair.first - m_PolyPair.second);
+    std::cout << "\n\t\tMultiplication of polynomials  -> P1 * P2 = " << (m_PolyPair.first * m_PolyPair.second);
 
     m_QuerySystem->QueryDouble("\n\n\tInput a constant value: ");
     float value = m_EventSystem->GetInput<double>();
@@ -286,16 +289,16 @@ Polynomial PolynomialApp::CalculateIntegral(const Polynomial& poly)
 // Existing functions (modified to work with new structure)
 void PolynomialApp::EnterPolynomialCoefficients(Polynomial& poly)
 {
-    m_QuerySystem->QueryInteger("\n\tEnter the number of terms: ", 1, true);
+    m_QuerySystem->QueryInteger("\tEnter the number of terms: ", 1, true);
     int numTerms = m_EventSystem->GetInput<int>();
 
     poly.setDegree(numTerms);
 
-    std::cout << "\n\tEnter coefficients for each term (from highest degree to constant term):";
-
+    std::cout << "\t\tEnter coefficients for each term (from highest degree to constant term):";
+    std::cout << "\n";
     for (int i = numTerms - 1; i >= 0; i--)
     {
-        std::string prompt = "\n\tCoefficient for ";
+        std::string prompt = "\t\t\tCoefficient for ";
         if (i == 0) prompt += "constant term: ";
         else if (i == 1) prompt += "x: ";
         else prompt += "x^" + std::to_string(i) + ": ";

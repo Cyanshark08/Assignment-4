@@ -11,8 +11,6 @@ void RationalNumberApp::Run()
 	while (m_MenuState != SubMenuState::Exited)
 	{
 		std::system("cls");
-		char input{ '\0' };
-
 		switch (m_MenuState)
 		{
 		case SubMenuState::Selection: // display sub menu for selection
