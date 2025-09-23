@@ -1,6 +1,8 @@
 #include "Application.h"
 #include <string>
 
+PolynomialApp* CreatePolynomialApp();
+
 Application::Application()
 	: m_State(MainAppState::MainApp),
 	m_CurrentSubApp(AppID::InvalidApp),
@@ -10,7 +12,7 @@ Application::Application()
 	m_QuerySystem->LinkEventSystem(m_EventSystem);
 	m_ComplexNumberApp.LinkSystems(m_EventSystem, m_QuerySystem);
 	m_RationalNumberApp.LinkSystems(m_EventSystem, m_QuerySystem);
-	m_PolynomialApp.LinkSystems(m_EventSystem, m_QuerySystem);
+	m_PolynomialApp.LinkSystems(m_EventSystem, m_QuerySystem);  // Direct object call
 }
 
 void Application::Run()
@@ -26,7 +28,7 @@ void Application::Run()
 			DisplayMainMenu();
 			QueryState();
 			break;
-		case MainAppState::SubApp:			
+		case MainAppState::SubApp:
 			switch (m_CurrentSubApp)
 			{
 			case AppID::ComplexNumber:
@@ -38,7 +40,7 @@ void Application::Run()
 				m_RationalNumberApp.Clean();
 				break;
 			case AppID::Polynomial:
-				m_PolynomialApp.Run();
+				m_PolynomialApp.Run();  // Direct object call
 				m_PolynomialApp.Clean();
 				break;
 			}
@@ -51,10 +53,10 @@ void Application::Run()
 }
 
 void Application::Clean()
-{	
+{
 	m_ComplexNumberApp.Clean();
 	m_RationalNumberApp.Clean();
-	m_RationalNumberApp.Clean();
+	m_PolynomialApp.Clean();  // Direct object call
 }
 
 void Application::DisplayMainMenu()
