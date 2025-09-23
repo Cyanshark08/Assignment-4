@@ -218,64 +218,7 @@ std::ostream& operator<<(std::ostream& out, const Polynomial& obj)
     return out;
 }
 
-// Scalar multiplication (left scalar multiplication)
-std::ostream& operator<<(std::ostream& out, const Polynomial& obj)
+Polynomial operator*(double scalar, const Polynomial& poly)
 {
-    if (obj.coefficients.empty())
-    {
-        out << "0";
-        return out;
-    }
-
-    bool firstTerm = true;
-
-    // Display from highest degree to lowest
-    for (int i = obj.coefficients.size() - 1; i >= 0; i--)
-    {
-        double coeff = obj.coefficients[i];
-
-        // Skip zero coefficients
-        if (std::abs(coeff) < 1e-10)
-        {
-            if (obj.coefficients.size() == 1)
-            {
-                out << "0";
-                return out;
-            }
-            continue;
-        }
-
-        // Handle sign and spacing
-        if (!firstTerm)
-        {
-            out << " + ";
-        }
-
-        // Output coefficient
-        if (std::abs(coeff - 1.0) > 1e-10 || i == 0)
-        {
-            if (std::abs(coeff - std::round(coeff)) < 1e-10)
-            {
-                out << static_cast<int>(std::round(coeff));
-            }
-            else
-            {
-                out << coeff;
-            }
-        }
-
-        // Output variable part with proper exponent notation
-        if (i > 0)
-        {
-            out << "x";
-            if (i > 1)
-            {
-                out << "^" << i;  // Use ^ for exponent notation
-            }
-        }
-
-        firstTerm = false;
-    }
-
-    return out;
+    return Polynomial({ poly.getCoefficients()[0] * scalar, poly.getCoefficients()[1] * scalar, poly.getCoefficients()[2] * scalar });
 }
